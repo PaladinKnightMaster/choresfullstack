@@ -2,15 +2,20 @@ namespace choreApi.Services;
 
 public class ChoresService
 {
-  private readonly FakeDb _db;
+  private readonly ChoreRepository _choreRepo;
+  public ChoresService(ChoreRepository choreRepository)
+  {
+    _choreRepo = choreRepository;
+  }
+
 
   public List<Chore> GetChores()
   {
-    return _db.Chores;
+    return _choreRepo.GetChores();
   }
   public Chore GetChoreById(string id)
   {
-    var chore = _db.Chores.Find(c => c.Id == id);
+    var chore = _choreRepo.GetChoreById(id);
     if (chore == null)
     {
       throw new Exception("Your id doesnt apply to any chores");
@@ -20,28 +25,20 @@ public class ChoresService
 
   public Chore PostChore(Chore choreData)
   {
-    _db.Chores.Add(choreData);
-    return choreData;
+    var chore = _choreRepo.PostChore(choreData);
+    return chore;
   }
 
   public Chore DeleteChore(string id)
   {
     var deletedChore = this.GetChoreById(id);
-    _db.Chores.Remove(deletedChore);
+    _choreRepo.DeleteChore(id);
     return deletedChore;
   }
-  public Chore EditChore(string id)
+  public Chore EditChore(string id, Chore choreData)
   {
-    var selectedChore = this.GetChoreById(id);
-    // _db.Chores.FindIndex(selectedChore);
-
-    return null;
+    var NewChore = _choreRepo.EditChore(choreData);
+    return NewChore;
   }
-
-  public ChoresService(FakeDb db)
-  {
-    _db = db;
-  }
-
 
 }

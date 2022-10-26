@@ -5,6 +5,13 @@ namespace choreApi.Controllers;
 public class ChoresController : ControllerBase
 {
   private readonly ChoresService _cs;
+  public ChoresController(ChoresService cs, Auth0Provider auth0Provider)
+  {
+    _cs = cs;
+    _auth0Provider = auth0Provider;
+  }
+  private readonly Auth0Provider _auth0Provider;
+
 
   [HttpGet]
   public ActionResult<List<Chore>> GetChores()
@@ -35,10 +42,12 @@ public class ChoresController : ControllerBase
   }
 
   [HttpPost]
-  public ActionResult<Chore> PostChore([FromBody] Chore choreData)
+  public async Task<ActionResult<Chore>> PostChore([FromBody] Chore choreData)
   {
     try
     {
+      var creatorInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      choreData.CreatorId = creatorInfo?.Id;
       var NewChore = _cs.PostChore(choreData);
       return Ok(NewChore);
     }
@@ -63,11 +72,11 @@ public class ChoresController : ControllerBase
   }
 
   [HttpPut("{id}")]
-  public ActionResult<Chore> EditChore(string id)
+  public ActionResult<Chore> EditChore(string id, [FromBody] Chore choreData)
   {
     try
     {
-      var editedChore = _cs.EditChore(id);
+      var editedChore = _cs.EditChore(id, choreData);
       return editedChore;
     }
     catch (System.Exception error)
@@ -76,8 +85,4 @@ public class ChoresController : ControllerBase
     }
   }
 
-  public ChoresController(ChoresService cs)
-  {
-    _cs = cs;
-  }
 }
