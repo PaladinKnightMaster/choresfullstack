@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "Client",
+      "path": "choreVue"
+    }
+    {
+      "name": "Server",
+      "path": "choreApi"
+    }
+  ]
+}
