@@ -18,7 +18,7 @@ public class ChoresController : ControllerBase
   {
     try
     {
-      var chores = _cs.GetChores();
+      List<Chore> chores = _cs.GetChores();
       return Ok(chores);
     }
     catch (System.Exception e)

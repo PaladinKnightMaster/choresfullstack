@@ -22,13 +22,11 @@ public class ChoresService
     }
     return chore;
   }
-
   public Chore PostChore(Chore choreData)
   {
     var chore = _choreRepo.PostChore(choreData);
     return chore;
   }
-
   public Chore DeleteChore(string id)
   {
     var deletedChore = this.GetChoreById(id);

@@ -30,14 +30,16 @@ public class Startup
     });
     services.AddSingleton<Auth0Provider>();
     // Here
-    services.AddSingleton<FakeDb>();
+    // services.AddSingleton<FakeDb>();
     services.AddScoped<IDbConnection>(x => CreateDbConnection());
+
 
     services.AddScoped<AccountsRepository>();
     services.AddScoped<AccountService>();
 
     // Here
     services.AddTransient<ChoresService>();
+    services.AddTransient<ChoreRepository>();
   }
 
   private void ConfigureCors(IServiceCollection services)
